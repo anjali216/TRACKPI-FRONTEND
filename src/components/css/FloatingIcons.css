@@ -1,0 +1,243 @@
+.floating-icons-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.left-social-icons {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    pointer-events: auto;
+    z-index: 1001;
+}
+
+.social-icon {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: white;
+    font-size: 20px;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    padding-left: 12px;
+    border-radius: 0 5px 5px 0;
+}
+
+.social-icon:hover {
+    width: 160px;
+    padding-left: 15px;
+}
+
+.social-icon svg {
+    flex-shrink: 0;
+    margin-right: 15px;
+}
+
+.social-icon .label {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+}
+
+.social-icon:hover .label {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Social Icon Colors */
+.social-icon.insta {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+
+.social-icon.fb {
+    background-color: #4267B2;
+}
+
+.social-icon.yt {
+    background-color: #FF0000;
+}
+
+.social-icon.ln {
+    background-color: #0077b5;
+}
+
+.social-icon.quora {
+    background-color: #a82400;
+}
+
+.social-icon.blogger {
+    background-color: #ff5722;
+}
+
+.social-icon.medium {
+    background-color: #000000;
+}
+
+.right-action-icons {
+    position: fixed;
+    right: 20px;
+    bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    pointer-events: auto;
+}
+
+.action-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+    transition: transform 0.3s ease;
+    text-decoration: none;
+}
+
+.action-icon:hover {
+    transform: scale(1.1);
+}
+
+.action-icon.whatsapp {
+    background-color: #25d366;
+}
+
+.action-icon.support {
+    background-color: #3b82f6;
+}
+
+.action-icon.ai-bot {
+    background-color: #6366f1;
+}
+
+.action-icon .badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+@media (max-width: 768px) {
+    .social-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+        padding-left: 8px;
+    }
+
+    .social-icon:hover {
+        width: 35px;
+        /* Disable expansion on mobile */
+    }
+
+    .social-icon .label {
+        display: none;
+        /* Hide labels on mobile */
+    }
+
+    .action-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+}
+
+/* Hover Label Styles */
+.action-icon {
+    position: relative;
+    overflow: visible !important;
+}
+
+.hover-label {
+    position: absolute;
+    right: 60px;
+    color: white;
+    padding: 6px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(10px);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+}
+
+.hover-label::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 6px 0 6px 6px;
+    border-style: solid;
+    border-color: transparent transparent transparent currentColor;
+    /* Uses text color, but we'll set it specifically */
+}
+
+/* Specific Label Colors */
+.whatsapp .hover-label {
+    background-color: #25d366;
+}
+
+.whatsapp .hover-label::after {
+    border-left-color: #25d366;
+}
+
+.support .hover-label {
+    background-color: #3b82f6;
+}
+
+.support .hover-label::after {
+    border-left-color: #3b82f6;
+}
+
+.ai-bot .hover-label {
+    background-color: #6366f1;
+}
+
+.ai-bot .hover-label::after {
+    border-left-color: #6366f1;
+}
+
+.action-icon.ai-bot.active {
+    background-color: #FF9D00;
+    box-shadow: 0 0 20px rgba(255, 157, 0, 0.6);
+    transform: scale(1.15);
+}
+
+.action-icon:hover .hover-label {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}

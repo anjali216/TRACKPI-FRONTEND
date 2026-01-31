@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+
+/* Hide scrollbar for modern browsers */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.scroll-animation {
+  display: flex !important;
+  width: max-content;
+  animation: scroll 40s linear infinite;
+}
+
+.scroll-animation:hover {
+  animation-play-state: paused;
+}
