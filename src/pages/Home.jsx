@@ -10,66 +10,71 @@ import tech from '../assets/tech.jpg';
 import trade from '../assets/trade.png';
 import group3 from '../assets/group3.png';
 import group4 from '../assets/group4.png';
-import { Play, Volume2, VolumeX } from 'lucide-react';
+import { Volume2, VolumeX } from 'lucide-react';
 import FloatingIcons from '../components/FloatingIcons';
 
 function Home() {
   const companyArray = [luminar, IIDM, tech, trade];
   const location = useLocation();
+
   const heroRef = useRef(null);
   const videoRef = useRef(null);
-  const [isFloating, setIsFloating] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
 
+  const [isFloating, setIsFloating] = useState(false);
+  const [isMuted, setIsMuted] = useState(false); // 🔊 Sound ON
+  const [hasStarted, setHasStarted] = useState(false);
+
+  /* Floating logic */
   useEffect(() => {
     const handleScroll = () => {
-      // Toggle floating only when scrolled past the entire hero section height
       if (heroRef.current && window.scrollY > heroRef.current.offsetHeight) {
         setIsFloating(true);
       } else {
         setIsFloating(false);
       }
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  /* Scroll to signup */
   useEffect(() => {
-    if (location.state && location.state.scrollToSignup) {
+    if (location.state?.scrollToSignup) {
       const section = document.getElementById('signup-section');
       if (section) {
         setTimeout(() => {
           section.scrollIntoView({ behavior: 'smooth' });
-        }, 500); // Delay as requested
+        }, 500);
       }
     }
   }, [location]);
 
-  useEffect(() => {
-    // Delay video playback by 3 seconds to show thumbnail
-    const timer = setTimeout(() => {
-      if (videoRef.current) {
-        videoRef.current.play().catch(e => console.log("Autoplay prevented:", e));
-      }
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
+  /* Start video on click (no play button) */
+  const startVideo = () => {
+    if (!hasStarted && videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.muted = false;
+      videoRef.current.play();
+      setHasStarted(true);
+    }
+  };
 
   return (
     <div className="bg-gradient-to-br from-[#09060E] via-[#2D1D29] to-[#694230]">
-      {/* Hero Section */}
+
+      {/* HERO SECTION */}
       <section
         ref={heroRef}
-        className={`relative w-full max-w-[1728px] mx-auto h-[223px] sm:h-[320px] md:h-[500px] lg:h-screen flex items-center text-white overflow-hidden transition-all duration-500 ease-in-out`}
+        className="relative w-full max-w-[1728px] mx-auto h-[223px] sm:h-[320px] md:h-[500px] lg:h-screen flex items-center overflow-hidden"
       >
 
-        {/* Floating Video Container */}
+        {/* VIDEO CONTAINER */}
         <div
-          className={`transition-all duration-700 ease-in-out z-50 overflow-hidden bg-black
+          onClick={startVideo} // 👈 click anywhere
+          className={`transition-all duration-700 ease-in-out z-50 overflow-hidden bg-black cursor-pointer
             ${isFloating
               ? 'fixed top-24 right-5 w-[280px] h-[158px] md:w-[400px] md:h-[225px] rounded-xl shadow-2xl border-2 border-white/20'
-              : 'absolute top-0 left-0 w-full h-full rounded-none border-0'
+              : 'absolute top-0 left-0 w-full h-full'
             }`}
         >
           <video
@@ -80,21 +85,30 @@ function Home() {
             playsInline
             className="w-full h-full object-cover"
           >
-            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
+            <source
+              src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+              type="video/mp4"
+            />
           </video>
 
-          {/* Mute/Unmute Button - Moves with video */}
-          <div
-            onClick={() => setIsMuted(!isMuted)}
-            className={`absolute z-10 flex items-center justify-center cursor-pointer bg-[#492F30]/80 rounded-full text-white hover:bg-[#492F30] transition-colors
-              ${isFloating ? 'bottom-2 right-2 w-8 h-8 scale-75' : 'bottom-4 right-4 sm:bottom-10 sm:right-6 w-8 h-8 sm:w-12 sm:h-12'}
-            `}
-          >
-            {isMuted ? <VolumeX size={isFloating ? 20 : 24} /> : <Volume2 size={isFloating ? 20 : 24} />}
-          </div>
+          {/* MUTE / UNMUTE */}
+          {hasStarted && (
+            <div
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsMuted(!isMuted);
+              }}
+              className={`absolute z-10 flex items-center justify-center bg-[#492F30]/80 rounded-full text-white
+                ${isFloating ? 'bottom-2 right-2 w-8 h-8' : 'bottom-4 right-4 sm:bottom-10 sm:right-6 w-12 h-12'}
+              `}
+            >
+              {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+            </div>
+          )}
         </div>
       </section>
 
+    
       <section className="px-4 md:px-20 mt-10">
         {/* Header */}
         <h2 className="text-center text-white font-extrabold text-3xl md:text-5xl libre-franklin leading-tight tracking-wide">
@@ -223,4 +237,4 @@ function Home() {
   );
 }
 
-export default Home;  
+export default Home;
